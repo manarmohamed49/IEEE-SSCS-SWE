@@ -13,21 +13,12 @@ return 0;
 int main()
 {
 int strength;
-if(is_response_detected(30))
-printf("strenth %d : response detected\n", strength);
-else
-printf("strenth %d :no  response detected\n", strength);
-if(is_response_detected(50))
-printf("strenth %d : response detected\n", strength);
-else 
-printf("strenth %d :no  response detected\n", strength);
-if(is_response_detected(80))
-printf("strenth %d : response detected\n", strength);
-else 
-printf("strenth %d :no  response detected\n", strength);
-if(is_response_detected(50))
-printf("strenth %d : response detected\n", strength);
-else 
-printf("strenth %d :no  response detected\n", strength);
-return 0;
+printf("enter signal strength: ");
+    scanf("%d", &strength);
+if (is_response_detected(strength))
+        printf(" %d: Response detected \n", strength);
+    else
+        printf(" %d: No response \n", strength);
+
+    return 0;
 }
