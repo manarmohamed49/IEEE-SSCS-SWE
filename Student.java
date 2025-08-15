@@ -1,86 +1,67 @@
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 public class Student {
-
+    private static int idCounter = 1;
+    private int id;
     private String name;
     private int age;
-    private int id;
-
-    private static int nextId = 1;
-    private static String fileName = "students.csv";
-    private static ArrayList<Student> students = new ArrayList<>();
+    private List<Course> courses;
 
     public Student(String name, int age) {
-        setName(name);
-        setAge(age);
-        this.id = nextId++;
-        students.add(this); // نضيفه للقائمة عشان نقدر نبحث
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        if (name != null && !name.isEmpty()) {
-            this.name = name;
-        } else {
-            System.out.println("Name cannot be null or empty.");
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("Student name cannot be empty.");
         }
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        if (age > 0) {
-            this.age = age;
-        } else {
-            System.out.println("Age must be greater than 0.");
+        if (age <= 0) {
+            throw new IllegalArgumentException("Age must be positive.");
         }
+
+        this.id = idCounter++;
+        this.name = name.trim();
+        this.age = age;
+        this.courses = new ArrayList<>();
     }
 
     public int getId() {
         return id;
     }
 
-    public void saveFile() {
-        try (FileWriter fw = new FileWriter(fileName, true)) {
-            fw.write(id + "," + name + "," + age + "\n");
-            System.out.println("Student saved: " + this);
-        } catch (IOException e) {
-            System.out.println("Error saving student: " + e.getMessage());
-        }
-    }
-
-    public static void searchByName(String searchName) {
-        boolean found = false;
-        for (Student s : students) {
-            if (s.getName().equalsIgnoreCase(searchName)) {
-                System.out.println("Found student: " + s);
-                found = true;
+    public void addCourse(Course course) {
+        for (Course c : courses) {
+            if (c.getName().equalsIgnoreCase(course.getName())) {
+                System.out.println("Course already exists for this student.");
+                return;
             }
         }
-        if (!found) {
-            System.out.println("No student found with name: " + searchName);
+        courses.add(course);
+    }
+
+    public void removeCourse(String courseName) {
+        courses.removeIf(c -> c.getName().equalsIgnoreCase(courseName));
+    }
+
+    public double getAverageGrade() {
+        if (courses.isEmpty()) return 0;
+        double total = 0;
+        for (Course c : courses) {
+            total += c.getGrade();
         }
+        return total / courses.size();
     }
 
+    public void sortCoursesByGrade() {
+        courses.sort(Comparator.comparingDouble(Course::getGrade).reversed());
+    }
+
+    @Override
     public String toString() {
-        return "Student[ID=" + id + ", Name=" + name + ", Age=" + age + "]";
-    }
-
-    public static void main(String[] args) {
-        Student s1 = new Student("Manar", 21);
-        s1.saveFile();
-        Student s2 = new Student("Ahmed", 21);
-        s2.saveFile();
-
-        searchByName("Manar");
-        searchByName("Hoda");
+        return "Student{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", age=" + age +
+                ", courses=" + courses +
+                '}';
     }
 }
 
