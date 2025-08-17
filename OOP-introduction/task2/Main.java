@@ -1,17 +1,16 @@
 public class Main{
    public static void main(String[] args){
-    try {
-            Movie movie1 = new Movie("Inception", "PG-13", 2);
-            Movie movie2 = new Movie("The Lion King", "G", 5);
-            System.out.println(movie1);
-            System.out.println(movie2);
 
+            Movies myMovies = new Movies();
+ 
+         myMovies.addMovie("Inception", "PG-13", 2);
+        myMovies.addMovie("Interstellar", "PG-13", 1);
+        myMovies.addMovie("inception", "PG-13", 5)
+        
+         myMovies.displayMovies(); 
+         myMovies.incrementWatched("Inception");
+         myMovies.incrementWatched("Avatar");
 
-             movie1.incrementWatched();
-            System.out.println("After watching again: " + movie1);
-
-} catch (IllegalArgumentException e) {
-            System.out.println("Error: " + e.getMessage());
-        }
+         myMovies.displayMovies();
     }
-}
+} 
